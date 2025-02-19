@@ -1,16 +1,28 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME 'node:alpine'
+    }
+
     stages {
-        stage('Hello') {
-            agent{
-                docker{
-                    image 'node:alpine'
-                    reuseNode true
-                }
-            }
+        stage('Checkout Code') {
             steps {
-                echo 'Hello World'
+                git 'https://github.com/cloudlumanex/Learn-CICD-using-jenkins-on-docker.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME:latest .'
+            }
+        }
+
+        
+
+        stage('Deploy') {
+            steps {
+                sh 'docker run -d -p 3000:3000 $IMAGE_NAME:latest'
             }
         }
     }
