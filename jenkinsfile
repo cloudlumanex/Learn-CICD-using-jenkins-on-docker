@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME 'node:alpine'
+        IMAGE_NAME = 'node:alpine'
     }
 
     stages {
